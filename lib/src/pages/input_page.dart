@@ -146,9 +146,7 @@ class _InputPageState extends State<InputPage> {
                       onChanged: (opt){
                         setState(() {
                         opcionSeleccionada=opt;
-   
                         });
-                       
                       },
                     ),
                   ),
