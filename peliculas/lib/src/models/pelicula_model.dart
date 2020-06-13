@@ -3,6 +3,14 @@
 class Peliculas{
   List<Pelicula> items = new List();
   Peliculas();
+
+  Peliculas.fromJsonList(List<dynamic> jsonList){
+    if(jsonList ==null)return;
+    for (var item in jsonList){
+      final pelicula = new Pelicula.fromJsonMap(item);
+      items.add(pelicula);
+    }
+  }
 }
 
 class Pelicula {
@@ -39,7 +47,7 @@ class Pelicula {
   });
 
   Pelicula.fromJsonMap(Map<String, dynamic> json){
-    popularity       = json['popularity'];
+    popularity       = json['popularity']/1;
     voteCount        = json['vote_count'];
     video            = json['video'];
     posterPath       = json['poster_path'];
@@ -54,6 +62,12 @@ class Pelicula {
     overview         = json['overview'];
     releaseDate      = json['release_date'];
 
+  }
+  getPosterImg(){
+    if(posterPath==null){
+      return 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
+    }
+    return 'https://image.tmdb.org/t/p/w500/$posterPath';
   }
 }
 
