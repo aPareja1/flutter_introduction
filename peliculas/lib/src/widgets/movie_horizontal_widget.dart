@@ -25,40 +25,40 @@ class MovieHorizontal extends StatelessWidget {
           controller: _pageController,
           pageSnapping: false,
           itemCount: peliculas.length,
-          itemBuilder: (context,i){
-            return _tarjeta(context, peliculas[i]);
-          },
-         ),
+          itemBuilder: (context, i) => _tarjeta(context, peliculas[i])),
     );
   }
 
   List<Widget> _tarjetas(BuildContext context) {
-    return peliculas.map((pelicula) {
-     
-    }).toList();
+    return peliculas.map((pelicula) {}).toList();
   }
 
-  Widget _tarjeta(BuildContext context, Pelicula pelicula){
-     return Container(
-        margin: EdgeInsets.only(right: 15.0),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: FadeInImage(
-                image: NetworkImage(pelicula.getPosterImg()),
-                placeholder: AssetImage('assets/img/no-image.jpg'),
-                fit: BoxFit.cover,
-                height: 160.0,
-              ),
+  Widget _tarjeta(BuildContext context, Pelicula pelicula) {
+    final tajerta= Container(
+      margin: EdgeInsets.only(right: 15.0),
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              image: NetworkImage(pelicula.getPosterImg()),
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              fit: BoxFit.cover,
+              height: 160.0,
             ),
-            Text(
-              pelicula.title,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.caption,
-            ),
-          ],
-        ),
-      );
+          ),
+          Text(
+            pelicula.title,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ],
+      ),
+    );
+    return GestureDetector(onTap: (){
+      Navigator.pushNamed(context, '/detalle',arguments: pelicula);
+     
+    },
+    child: tajerta,);
   }
 }
