@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/providers/peliculas_provider.dart';
 
 class DataSearch extends SearchDelegate{
 
@@ -15,6 +17,7 @@ class DataSearch extends SearchDelegate{
     'Capitan america',
   ];
 
+  final peliculasProvider = new PeliculasProvider();
 
 
   @override
@@ -56,14 +59,35 @@ class DataSearch extends SearchDelegate{
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-  final listaSugerida = query.isEmpty?peliculasRecientes:peliculas.where(
-    (element) => element.toLowerCase().startsWith(query.toLowerCase())).toList();
-  return ListView.builder(itemCount: listaSugerida.length,
-  itemBuilder: (context,i){
-    return ListTile(
-      leading: Icon(Icons.movie),
-      title: Text(peliculasRecientes[i]),
-    );
+  if(query.isEmpty){
+    return Container();
+  }
+  return FutureBuilder(future: peliculasProvider.buscarPelicula(query) ,
+  builder: (BuildContext context, AsyncSnapshot <List<Pelicula>>snapshot){
+    if(snapshot.hasData){
+      return ListView(
+        children: snapshot.data.map((e) => 
+         ListTile(
+           leading: FadeInImage(
+             image: NetworkImage(e.getPosterImg()),
+             placeholder: AssetImage('assets/img/no-image.jpg'),
+             width: 50.0,
+             fit: BoxFit.contain,
+           ),
+           title: Text(e.title),
+           subtitle: Text(e.originalTitle),
+           onTap: (){
+             close(context, null);
+             e.uniqueId='';
+             Navigator.pushNamed(context, '/detalle',arguments: e);
+           },
+        )).toList(),
+      ); 
+    }else{
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   },);
   }
 
